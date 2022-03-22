@@ -18,12 +18,12 @@ namespace MovieShowVideo.Dao
 
         public List<Media> Get()
         {
-            return new List<Media>(_context.GetMovies);
+            return new List<Media>(_context.Movies);
         }
 
         public Media Search(string searchString)
         {
-            var results = _context.GetMovies.Where(x => x.MovieTitle.Contains(searchString));
+            var results = _context.Movies.Where(x => x.MovieTitle.Contains(searchString));
             return results.FirstOrDefault();
         }
     }

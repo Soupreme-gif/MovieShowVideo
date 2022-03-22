@@ -7,19 +7,19 @@ namespace MovieShowVideo.Dao
     {
         // hardcoded here to simulate that it might come from the datasource (file/database)
         // when we generate our Context from the database this will be replaced
-        public List<Movie> GetMovies = new()
+        private readonly List<Movie> _getMovies = new()
         {
             new()
                 {Id = 1, Name = "Movie (2022)", MovieTitle = "My New Movie"}
         };
 
-        public List<Show> GetShows = new()
+        private readonly List<Show> _getShows = new()
         {
             new()
                 {Id = 1, Name = "Show (1999)", ShowTitle = "My Awesome Show"}
         };
 
-        public List<Video> GetVideos = new()
+        private readonly List<Video> _getVideos = new()
         {
             new()
                 {Id = 1, Name = "Video (2002)", VideoTitle = "My Cool Video"}
@@ -31,9 +31,9 @@ namespace MovieShowVideo.Dao
 
         public DataContext()
         {
-            Movies = GetMovies;
-            Shows = GetShows;
-            Videos = GetVideos;
+            Movies = _getMovies;
+            Shows = _getShows;
+            Videos = _getVideos;
         }
     }
 }
