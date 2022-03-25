@@ -3,10 +3,12 @@
     public class Movie : Media
     {
         public string MovieTitle { get; set; }
+        
+        public string Genres { get; set; }
 
         public override string ToString()
         {
-            return $"{Name}: {MovieTitle}";
+            return $"{Id}: {MovieTitle}: {Genres}";
         }
     }
 }

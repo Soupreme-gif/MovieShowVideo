@@ -10,19 +10,19 @@ namespace MovieShowVideo.Dao
         private readonly List<Movie> _getMovies = new()
         {
             new()
-                {Id = 1, Name = "Movie (2022)", MovieTitle = "My New Movie"}
+                {Id = 1, MovieTitle = "My New Movie"}
         };
 
         private readonly List<Show> _getShows = new()
         {
             new()
-                {Id = 1, Name = "Show (1999)", ShowTitle = "My Awesome Show"}
+                {Id = 1, ShowTitle = "My Awesome Show"}
         };
 
         private readonly List<Video> _getVideos = new()
         {
             new()
-                {Id = 1, Name = "Video (2002)", VideoTitle = "My Cool Video"}
+                {Id = 1, VideoTitle = "My Cool Video"}
         };
 
         public List<Movie> Movies { get; set; }
