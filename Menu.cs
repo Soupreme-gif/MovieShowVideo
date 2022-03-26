@@ -24,7 +24,30 @@ public class Menu
             if (response == "1")
             {
 
-                IUtility writer = new UtilityWriter();
+                var choice = "";
+
+                for (int j = 0; j < Int32.MaxValue; j++)
+                {
+                    Console.WriteLine("What type of media is it?");
+                    Console.WriteLine("Movie");
+                    Console.WriteLine("Show");
+                    Console.WriteLine("Video");
+                    
+                    choice = Console.ReadLine();
+
+                    if (choice.ToLower() == "movie" || choice.ToLower() == "show" || choice.ToLower() == "video")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice please try again");
+                    }
+                    
+                }
+
+                UtilityWriter writer = new UtilityWriter();
+                writer.Write(choice);
 
             }
             

@@ -1,6 +1,6 @@
 ﻿namespace MovieShowVideo.Utilities;
 
-public class UtilityReader: IUtility
+public class UtilityReader
 {
     
 }

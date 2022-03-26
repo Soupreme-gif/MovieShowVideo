@@ -1,6 +1,11 @@
 ﻿namespace MovieShowVideo.Utilities;
 
-public class UtilityWriter: IUtility
+public class UtilityWriter
 {
+
+    public void Write(string choice)
+    {
+        
+    }
     
 }
