@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MovieShowVideo.Models;
 
 namespace MovieShowVideo.Utilities;
 
@@ -19,11 +20,52 @@ public class UtilityWriter
         if (mediaChoice == "movie")
         {
             file = "movies.csv";
+            
+            do
+            {
+                title = getTitle();
+                acceptableTitle = IsUnique(file, title);
+            } while (acceptableTitle == false);
+        
+            var genreList = CreateGenreList();
+            var mediaID = CreateMediaId(file);
+        
+            var row = $"{mediaID},{title},{genreList}";
+        
+            StreamWriter writer = new StreamWriter(file, true);
+        
+            writer.WriteLine(row);
+        
+            writer.Close();
+
         }
         else if (mediaChoice == "show")
         {
 
             file = "shows.csv";
+
+            var mediaID = CreateMediaId(file);
+            
+            do
+            {
+                title = getTitle();
+                acceptableTitle = IsUnique(file, title);
+            } while (acceptableTitle == false);
+
+            ShowInfromation info = new ShowInfromation();
+            
+            var episode = info.getEpisode();
+            var season = info.getSeason();
+            var writers = info.CreateWriterList();
+            
+            var row = $"{mediaID},{title},{episode},{season},{writers}";
+        
+            StreamWriter writer = new StreamWriter(file, true);
+        
+            writer.WriteLine(row);
+        
+            writer.Close();
+
 
         }
         else if (mediaChoice == "video")
@@ -31,23 +73,7 @@ public class UtilityWriter
             file = "video.csv";
         }
 
-        do
-        {
-            title = getTitle();
-            acceptableTitle = IsUnique(file, title);
-        } while (acceptableTitle == false);
         
-        var genreList = CreateGenreList();
-        var mediaID = CreateMediaId(file);
-        
-        var row = $"{mediaID},{title},{genreList}";
-        
-        StreamWriter writer = new StreamWriter(file, true);
-        
-        writer.WriteLine(row);
-        
-        writer.Close();
-
 
     }
 
