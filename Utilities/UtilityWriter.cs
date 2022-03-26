@@ -79,9 +79,21 @@ public class UtilityWriter
                 title = getTitle();
                 acceptableTitle = IsUnique(file, title);
             } while (acceptableTitle == false);
+
+            ExclusiveVideoInformation videoInformation = new ExclusiveVideoInformation();
+
+            var formats = videoInformation.CreateFormatList();
+            var length = videoInformation.getLength();
+            var regions = videoInformation.getLength();
             
-            
-            
+            var row = $"{mediaID},{title},{formats},{length},{regions}";
+        
+            StreamWriter writer = new StreamWriter(file, true);
+        
+            writer.WriteLine(row);
+        
+            writer.Close();
+
         }
 
 
