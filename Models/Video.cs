@@ -7,9 +7,7 @@
         public string Format {get; set;}
         public string Length { get; set; }
         public string Regions { get; set; }
-        
-        
-        
+
 
         public override string ToString()
         {
