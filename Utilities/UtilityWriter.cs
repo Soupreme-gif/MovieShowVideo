@@ -52,7 +52,7 @@ public class UtilityWriter
                 acceptableTitle = IsUnique(file, title);
             } while (acceptableTitle == false);
 
-            ShowInfromation info = new ShowInfromation();
+            ExclusiveShowInfromation info = new ExclusiveShowInfromation();
             
             var episode = info.getEpisode();
             var season = info.getSeason();
@@ -71,9 +71,19 @@ public class UtilityWriter
         else if (mediaChoice == "video")
         {
             file = "video.csv";
+            
+            var mediaID = CreateMediaId(file);
+            
+            do
+            {
+                title = getTitle();
+                acceptableTitle = IsUnique(file, title);
+            } while (acceptableTitle == false);
+            
+            
+            
         }
 
-        
 
     }
 

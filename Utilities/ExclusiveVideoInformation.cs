@@ -1,6 +1,6 @@
 ﻿namespace MovieShowVideo.Utilities;
 
-public class VideoInformation
+public class ExclusiveVideoInformation
 {
     
 }
