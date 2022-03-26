@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MovieShowVideo.Utilities;
 
-public class ExclusiveShowInfromation
+public class ExclusiveShowInformation
 {
 
     public string getEpisode()

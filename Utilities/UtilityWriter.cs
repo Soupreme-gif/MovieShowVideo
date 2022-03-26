@@ -52,7 +52,7 @@ public class UtilityWriter
                 acceptableTitle = IsUnique(file, title);
             } while (acceptableTitle == false);
 
-            ExclusiveShowInfromation info = new ExclusiveShowInfromation();
+            ExclusiveShowInformation info = new ExclusiveShowInformation();
             
             var episode = info.getEpisode();
             var season = info.getSeason();
