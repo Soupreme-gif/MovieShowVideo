@@ -35,7 +35,9 @@ public class Menu
                     
                     choice = Console.ReadLine();
 
-                    if (choice.ToLower() == "movie" || choice.ToLower() == "show" || choice.ToLower() == "video")
+                    choice = choice.ToLower();
+
+                    if (choice == "movie" || choice == "show" || choice == "video")
                     {
                         break;
                     }
