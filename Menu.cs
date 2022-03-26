@@ -55,7 +55,37 @@ public class Menu
             
             else if (response == "2")
             {
+                var choice = "";
 
+                for (int j = 0; j < Int32.MaxValue; j++)
+                {
+                    Console.WriteLine("What type of media is it?");
+                    Console.WriteLine("Movie");
+                    Console.WriteLine("Show");
+                    Console.WriteLine("Video");
+                    
+                    choice = Console.ReadLine();
+
+                    choice = choice.ToLower();
+
+                    if (choice == "movie" || choice == "show" || choice == "video")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice please try again");
+                    }
+
+                    UtilityReader reader = new UtilityReader();
+                    
+                    reader.readMediaType(choice);
+
+
+                }
+
+                UtilityWriter writer = new UtilityWriter();
+                writer.Write(choice);
                 
 
             }
