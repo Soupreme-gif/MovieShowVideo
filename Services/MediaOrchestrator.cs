@@ -25,7 +25,7 @@ namespace MovieShowVideo.Services
             _videoRepository = new VideoRepository();
             _showRepository = new ShowRepository();
             
-            displayMenu();
+            
         }
 
         public List<Media> SearchAllMedia(string searchString)

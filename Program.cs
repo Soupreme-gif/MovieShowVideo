@@ -8,6 +8,7 @@ namespace MovieShowVideo
         private static void Main(string[] args)
         {
             var orchestrator = new MediaOrchestrator();
+            orchestrator.displayMenu();
         }
     }
 }
