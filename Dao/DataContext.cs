@@ -71,7 +71,7 @@ namespace MovieShowVideo.Dao
                 var row = line.Split(",");
 
                 Show show = new Show()
-                    {Id = row[1], ShowTitle = row[1], Episode = row[2], Season = row[3], Writers = row[4]};
+                    {Id = row[0], ShowTitle = row[1], Episode = row[2], Season = row[3], Writers = row[4]};
                 
                 shows.Add(show);
 
