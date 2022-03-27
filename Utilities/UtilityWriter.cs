@@ -103,7 +103,7 @@ public class UtilityWriter
     {
         var title = "";
 
-        Console.Write("Title of movie?: ");
+        Console.Write("Title of media?: ");
         title = Console.ReadLine();
         title = title.IndexOf(",") != -1 ? $"\"{title}\"" : title;
 
