@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MovieShowVideo.Dao;
 using MovieShowVideo.Models;
+using MovieShowVideo.Utilities;
 
 namespace MovieShowVideo.Services
 {
@@ -22,6 +24,8 @@ namespace MovieShowVideo.Services
             _movieRepository = new MovieRepository();
             _videoRepository = new VideoRepository();
             _showRepository = new ShowRepository();
+            
+            displayMenu();
         }
 
         public List<Media> SearchAllMedia(string searchString)
@@ -32,5 +36,113 @@ namespace MovieShowVideo.Services
 
             return _mediaList;
         }
+        
+        public void displayMenu()
+    {
+        
+        
+        for (int i = 0; i < Int32.MaxValue; i++)
+        {
+
+            Console.WriteLine("Choose an option.");
+            Console.WriteLine("1: add media.");
+            Console.WriteLine("2: display list of media.");
+            Console.WriteLine("3: search for media.");
+            Console.WriteLine("4: exit");
+            Console.WriteLine("Your choice?: ");
+
+            var response = Console.ReadLine();
+
+            if (response == "1")
+            {
+
+                var choice = "";
+
+                for (int j = 0; j < Int32.MaxValue; j++)
+                {
+                    Console.WriteLine("What type of media is it?");
+                    Console.WriteLine("Movie");
+                    Console.WriteLine("Show");
+                    Console.WriteLine("Video");
+                    
+                    choice = Console.ReadLine();
+
+                    choice = choice.ToLower();
+
+                    if (choice == "movie" || choice == "show" || choice == "video")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice please try again");
+                    }
+                    
+                }
+
+                UtilityWriter writer = new UtilityWriter();
+                writer.Write(choice);
+
+            }
+            
+            else if (response == "2")
+            {
+                var choice = "";
+
+                for (int j = 0; j < Int32.MaxValue; j++)
+                {
+                    Console.WriteLine("What type of media is it?");
+                    Console.WriteLine("Movie");
+                    Console.WriteLine("Show");
+                    Console.WriteLine("Video");
+                    
+                    choice = Console.ReadLine();
+
+                    choice = choice.ToLower();
+
+                    if (choice == "movie" || choice == "show" || choice == "video")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice please try again");
+                    }
+
+                    UtilityReader reader = new UtilityReader();
+                    
+                    reader.readMediaType(choice);
+
+
+                }
+
+                UtilityWriter writer = new UtilityWriter();
+                writer.Write(choice);
+                
+
+            }
+            
+            else if (response == "3")
+            {
+                Console.Write("Enter search string: ");
+                var searchString = Console.ReadLine();
+                var results = SearchAllMedia(searchString);
+
+                Console.WriteLine("Your results are:");
+                results.ForEach(Console.WriteLine);
+            }
+            
+            else if (response == "4")
+            {
+                break;
+            }
+            
+            else
+            {
+                Console.WriteLine("invalid entry please try again.");
+            }
+        }
+        
+    }
     }
 }

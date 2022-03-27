@@ -9,9 +9,6 @@ namespace MovieShowVideo
         {
             var orchestrator = new MediaOrchestrator();
 
-            Console.WriteLine("Note to student: Search for 'My' as the titles all have that word");
-            Console.WriteLine();
-
             Console.Write("Enter search string: ");
             var searchString = Console.ReadLine();
             var results = orchestrator.SearchAllMedia(searchString);
