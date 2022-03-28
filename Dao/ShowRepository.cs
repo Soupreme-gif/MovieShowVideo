@@ -23,7 +23,7 @@ namespace MovieShowVideo.Dao
 
         public Media Search(string searchString)
         {
-            var results = _context.Shows.Where(x => x.ShowTitle.Contains(searchString));
+            var results = _context.Shows.Where(x => x.ShowTitle.ToLower().Contains(searchString.ToLower()));
             return results.FirstOrDefault();
         }
     }
