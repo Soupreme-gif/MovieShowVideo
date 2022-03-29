@@ -8,7 +8,7 @@
     public abstract class Media
     {
         
-        //TODO change Id to an int when the database gets implemented
+        // change Id to an int when the database gets implemented
         public string Id { get; set; }
         
     }
