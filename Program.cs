@@ -1,5 +1,5 @@
 ﻿using System;
-using MovieShowVideo.Services;
+using MovieShowVideo.Utilities;
 
 namespace MovieShowVideo
 {
@@ -7,8 +7,10 @@ namespace MovieShowVideo
     {
         private static void Main(string[] args)
         {
-            var orchestrator = new MediaOrchestrator();
-            orchestrator.displayMenu();
+
+            UtilityMenu menu = new UtilityMenu();
+            menu.displayMenu();
+
         }
     }
 }

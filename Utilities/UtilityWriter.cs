@@ -2,211 +2,287 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MovieShowVideo.Models;
+using MovieShowVideo.Context;
+using MovieShowVideo.DataModels;
+
 
 namespace MovieShowVideo.Utilities;
 
 public class UtilityWriter
 {
 
-    public void Write(string choice)
+    public void Write()
     {
-
-        var mediaChoice = choice;
-        var file = "";
-        var title = "";
-        var acceptableTitle = false;
-
-        if (mediaChoice == "movie")
-        {
-            file = "movies.csv";
-            
-            do
-            {
-                title = getTitle();
-                acceptableTitle = IsUnique(file, title);
-            } while (acceptableTitle == false);
-        
-            var genreList = CreateGenreList();
-            var mediaID = CreateMediaId(file);
-        
-            var row = $"{mediaID},{title},{genreList}";
-        
-            StreamWriter writer = new StreamWriter(file, true);
-        
-            writer.WriteLine(row);
-        
-            writer.Close();
-
-        }
-        else if (mediaChoice == "show")
+        using (var context = new MovieContext())
         {
 
-            file = "shows.csv";
+            bool stopAddingGenres = false;
 
-            var mediaID = CreateMediaId(file);
+            var movie = new Movie();
             
-            do
-            {
-                title = getTitle();
-                acceptableTitle = IsUnique(file, title);
-            } while (acceptableTitle == false);
+            Console.WriteLine("Enter in the title of the movie?");
+            var movieTitle = Console.ReadLine();
 
-            ExclusiveShowInformation info = new ExclusiveShowInformation();
-            
-            var episode = info.getEpisode();
-            var season = info.getSeason();
-            var writers = info.CreateWriterList();
-            
-            var row = $"{mediaID},{title},{episode},{season},{writers}";
-        
-            StreamWriter writer = new StreamWriter(file, true);
-        
-            writer.WriteLine(row);
-        
-            writer.Close();
+            Console.WriteLine("When did the move come out? please format the release date in Year-month-day format.");
+            var date = Console.ReadLine();
+            var parsedDate = DateTime.Parse(date);
 
 
-        }
-        else if (mediaChoice == "video")
-        {
-            file = "video.csv";
-            
-            var mediaID = CreateMediaId(file);
-            
-            do
-            {
-                title = getTitle();
-                acceptableTitle = IsUnique(file, title);
-            } while (acceptableTitle == false);
+            movie.Title = movieTitle;
+            movie.ReleaseDate = parsedDate;
 
-            ExclusiveVideoInformation videoInformation = new ExclusiveVideoInformation();
+            context.Movies.Add(movie);
+            context.SaveChanges();
 
-            var formats = videoInformation.CreateFormatList();
-            var length = videoInformation.getLength();
-            var regions = videoInformation.getLength();
+            // move into its own method and finish it up
             
-            var row = $"{mediaID},{title},{formats},{length},{regions}";
-        
-            StreamWriter writer = new StreamWriter(file, true);
-        
-            writer.WriteLine(row);
-        
-            writer.Close();
+            // do
+            // {
+            //     
+            //     var theMovie = context.Movies.FirstOrDefault(m => m.Title == movie.Title);
+            //
+            //     Console.WriteLine("Enter in a Genre id");
+            //     var genreSelection = long.Parse(Console.ReadLine());
+            //     
+            //
+            //     var genre = context.Genres.FirstOrDefault(x => x.Id == genreSelection);
+            //
+            //     var movieGenre = new MovieGenre();
+            //
+            //     movieGenre.Genre = genre;
+            //     movieGenre.Movie = theMovie;
+            //
+            //     context.MovieGenres.Add(movieGenre);
+            //     context.SaveChanges();
+            //
+            //
+            // }while (stopAddingGenres != true);
+            //
 
         }
 
 
     }
 
-    public string getTitle()
+    public void DisplayMovies()
     {
-        var title = "";
-
-        Console.Write("Title of media?: ");
-        title = Console.ReadLine();
-        title = title.IndexOf(",") != -1 ? $"\"{title}\"" : title;
-
-
-        return title;
-    }
-    
-    public bool IsUnique(string file, string title)
-    {
-
-        var mediaTitle = title;
-        var isUniqueTitle = true;
-
-        StreamReader reader = new StreamReader(file);
-        var line = reader.ReadLine();
-
-        do
+        using (var context = new MovieContext())
         {
+            
+            Console.WriteLine("would you like to display all movies?");
+            var decision = Console.ReadLine();
 
-            while (!reader.EndOfStream)
+            if (decision.ToLower() == "yes")
             {
-                line = reader.ReadLine();
-                var entry = line.Split(",");
+                var movies = context.Movies;
 
-                if (mediaTitle.ToLower() == entry[1].ToLower())
+                // add a way to limit the amount of printed results
+                foreach (var movie in movies)
                 {
-                    Console.WriteLine("Sorry this is already in the database. Please try again");
-                    isUniqueTitle = false;
-                    break;
-
+                    Console.Write($"Movie: {movie?.Title} {movie?.ReleaseDate:MM-dd-yyyy}");
+                    
+                    foreach (var genre in movie?.MovieGenres ?? new List<MovieGenre>())
+                    {
+                        Console.Write($"\t{genre.Genre.Name} ");
+                    }
+                    
+                    Console.WriteLine("");
+                    
                 }
-
             }
+            else
+            {
+                
+                Console.WriteLine("Which movie would you like to look at?");
+                var movieOfInterest = Console.ReadLine();
+                
+                // check to see if movie is in the database or not
+                
+                var movie = context.Movies.FirstOrDefault(mov => mov.Title.ToLower().Equals(movieOfInterest.ToLower()));
 
-        } while (isUniqueTitle == false);
+                Console.WriteLine($"Movie: {movie?.Title} {movie?.ReleaseDate:MM-dd-yyyy}");
 
-        reader.Close();
+                Console.WriteLine("Genres:");
 
-        return isUniqueTitle;
+                foreach (var genre in movie?.MovieGenres ?? new List<MovieGenre>())
+                {
+                    Console.WriteLine($"\t{genre.Genre.Name}");
+                }
+            }
+          
+        }
+        
     }
-    
-    private string CreateGenreList()
+
+    public void Update()
     {
+        
+        Console.WriteLine("Movie title to update?");
+        var title = Console.ReadLine();
+        
+        Console.WriteLine("Enter updated movie title.");
+        var updatedTitle = Console.ReadLine();
 
-        List<string> genreList = new List<string>();
-        var toContinue = "";
-
-        do
+        using (var context = new MovieContext())
         {
+            var updateMovieTitle = context.Movies.FirstOrDefault(x => x.Title.ToLower().Equals(title.ToLower()));
 
-            Console.WriteLine("what genre is the movie?");
-            var genre = Console.ReadLine();
-            genre += "|";
-            genreList.Add(genre);
+            updateMovieTitle.Title = updatedTitle;
 
-            Console.WriteLine("Would you like to add more genres? type no to exit");
-            toContinue = Console.ReadLine();
+            context.Movies.Update(updateMovieTitle);
+            context.SaveChanges();
 
-        } while (toContinue != "no");
-
-        var lastEntry = genreList[genreList.Count() - 1];
-        genreList.RemoveAt(genreList.Count - 1);
-
-        lastEntry = lastEntry.Remove(lastEntry.Length - 1);
-
-        genreList.Add(lastEntry);
-
-        var listOfGenres = string.Join("|", genreList.ToArray());
-
-        return listOfGenres;
-
-    }
-    
-    public string CreateMediaId(string file)
-    {
-        StreamReader reader = new StreamReader(file);
-        var line = reader.ReadLine();
-        var mediaID = "";
-
-        if (reader.EndOfStream)
-        {
-            mediaID = "1";
         }
 
-        while (!reader.EndOfStream)
-        {
-            line = reader.ReadLine();
-            var entry = line.Split(",");
-            mediaID = entry[0];
-            //possibly remove the comma if it is in there
-            var movieIDAsANumber = UInt64.Parse(mediaID);
-            movieIDAsANumber += 1;
-            movieIDAsANumber.ToString();
-            mediaID = movieIDAsANumber.ToString();
-        }
-
-        reader.Close();
-
-        return mediaID;
     }
 
+    public void Delete()
+    {
+        
+        Console.WriteLine("Enter Movie title to Delete: ");
+        var title = Console.ReadLine();
 
-    
-    
-    
+        using (var context = new MovieContext())
+        {
+            var deleteMovieTitle = context.Movies.FirstOrDefault(x => x.Title.ToLower().Equals(title.ToLower()));
+
+            // verify exists first
+            if (deleteMovieTitle == null)
+            {
+                Console.WriteLine("Invalid entry please try again.");
+            }
+            else
+            {
+                context.Movies.Remove(deleteMovieTitle);
+                context.SaveChanges();
+            }
+            
+        }
+        
+    }
+
+    public void Search(string searchString)
+    {
+
+        using (var context = new MovieContext())
+        {
+            var results = context.Movies.Where(x => x.Title.Equals(searchString.ToLower()));
+
+            foreach (var result in results.ToList())
+            {
+                
+                Console.WriteLine($"{result.Id}, {result.Title}, {result.ReleaseDate}");
+                
+            }
+        }
+
+    }
+
+    //  public string getTitle()
+    //  {
+    //      var title = "";
+    //
+    //      Console.Write("Title of media?: ");
+    //      title = Console.ReadLine();
+    //      title = title.IndexOf(",") != -1 ? $"\"{title}\"" : title;
+    //
+    //
+    //      return title;
+    //  }
+    //
+    //  public bool IsUnique(string file, string title)
+    //  {
+    //
+    //      var mediaTitle = title;
+    //      var isUniqueTitle = true;
+    //
+    //      StreamReader reader = new StreamReader(file);
+    //      var line = reader.ReadLine();
+    //
+    //      do
+    //      {
+    //
+    //          while (!reader.EndOfStream)
+    //          {
+    //              line = reader.ReadLine();
+    //              var entry = line.Split(",");
+    //
+    //              if (mediaTitle.ToLower() == entry[1].ToLower())
+    //              {
+    //                  Console.WriteLine("Sorry this is already in the database. Please try again");
+    //                  isUniqueTitle = false;
+    //                  break;
+    //
+    //              }
+    //
+    //          }
+    //
+    //      } while (isUniqueTitle == false);
+    //
+    //      reader.Close();
+    //
+    //      return isUniqueTitle;
+    //  }
+    //
+    //  private List<string> CreateGenreList()
+    //  {
+    //
+    //      List<string> genreList = new List<string>();
+    //      var toContinue = "";
+    //
+    //      using (var context = new MovieContext())
+    //      {
+    //          
+    //          do
+    //          {
+    //
+    //              Console.WriteLine("what genre is the movie?");
+    //              var genre = Console.ReadLine();
+    //              genreList.Add(genre);
+    //
+    //              Console.WriteLine("Would you like to add more genres? type no to exit");
+    //              toContinue = Console.ReadLine();
+    //
+    //          } while (toContinue != "no");
+    //          
+    //      }
+    //
+    //     
+    //     
+    //      return genreList;
+    //
+    // }
+    //
+    // public string CreateMediaId(string file)
+    // {
+    //     StreamReader reader = new StreamReader(file);
+    //     var line = reader.ReadLine();
+    //     var mediaID = "";
+    //
+    //     if (reader.EndOfStream)
+    //     {
+    //         mediaID = "1";
+    //     }
+    //
+    //     while (!reader.EndOfStream)
+    //     {
+    //         line = reader.ReadLine();
+    //         var entry = line.Split(",");
+    //         mediaID = entry[0];
+    //         //possibly remove the comma if it is in there
+    //         var movieIDAsANumber = UInt64.Parse(mediaID);
+    //         movieIDAsANumber += 1;
+    //         movieIDAsANumber.ToString();
+    //         mediaID = movieIDAsANumber.ToString();
+    //     }
+    //
+    //     reader.Close();
+    //
+    //     return mediaID;
+    // }
+    //
+    //
+    //
+    //
+    //
 }
