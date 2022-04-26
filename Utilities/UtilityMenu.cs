@@ -19,8 +19,9 @@ public class UtilityMenu
                 Console.WriteLine("4: display movies");
                 Console.WriteLine("5: delete a movie");
                 Console.WriteLine("6: add a User");
-                Console.WriteLine("7: exit");
-                Console.WriteLine("Your choice?: ");
+                Console.WriteLine("7: Display user");
+                Console.WriteLine("8: exit");
+                Console.Write("Your choice?: ");
 
                 var response = Console.ReadLine();
 
@@ -61,7 +62,17 @@ public class UtilityMenu
                     
                 }
 
+                else if (response == "6")
+                {
+                    writer.addUser();
+                }
+
                 else if (response == "7")
+                {
+                     writer.displayUsers();
+                }
+
+                else if (response == "8")
                 {
                     break;
                 }
