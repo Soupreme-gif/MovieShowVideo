@@ -18,7 +18,8 @@ public class UtilityMenu
                 Console.WriteLine("3: search for movie.");
                 Console.WriteLine("4: display movies");
                 Console.WriteLine("5: delete a movie");
-                Console.WriteLine("6: exit");
+                Console.WriteLine("6: add a User");
+                Console.WriteLine("7: exit");
                 Console.WriteLine("Your choice?: ");
 
                 var response = Console.ReadLine();
@@ -33,7 +34,7 @@ public class UtilityMenu
                 else if (response == "2")
                 {
                    
-                   writer.Update();
+                   writer.UpdateMovie();
 
                 }
 
@@ -56,11 +57,11 @@ public class UtilityMenu
                 else if (response == "5")
                 {
                     
-                    writer.Delete();
+                    writer.DeleteMovie();
                     
                 }
 
-                else if (response == "6")
+                else if (response == "7")
                 {
                     break;
                 }
