@@ -120,7 +120,7 @@ public class UtilityWriter
 
                 var movie = context.Movies.FirstOrDefault(mov => mov.Title.ToLower().Equals(movieOfInterest.ToLower()));
 
-                Console.WriteLine($"Movie: {movie?.Title} {movie?.ReleaseDate:MM-dd-yyyy}");
+                Console.WriteLine($"Movie: {movie?.Title} {movie?.ReleaseDate:MM-dd-yyyy} ");
 
                 Console.WriteLine("\tGenres:");
 
@@ -196,7 +196,7 @@ public class UtilityWriter
 
         using (var context = new MovieContext())
         {
-            var results = context.Movies.Where(x => x.Title.Equals(searchString.ToLower()));
+            var results = context.Movies.Where(x => x.Title.ToLower().Equals(searchString.ToLower()));
 
             foreach (var result in results.ToList())
             {
@@ -270,6 +270,69 @@ public class UtilityWriter
 
         }
 
+    }
+
+    public void RateAMovie()
+    {
+
+        using (var context = new MovieContext())
+        {
+
+            
+            
+            Console.WriteLine("Enter in the name of the movie you want to rate");
+            var title = Console.ReadLine();
+            
+            Console.WriteLine("which user is rating this movie");
+            var userSelection = long.Parse(Console.ReadLine());
+
+            var movieToBeRated = context.Movies.FirstOrDefault(x => x.Title.Equals(title));
+            var userInQuestion = context.Users.FirstOrDefault(x => x.Id == userSelection);
+
+            var userMovie = new UserMovie();
+            
+            Console.WriteLine("What is the rating for this movie?");
+            var rating = Int32.Parse(Console.ReadLine());
+
+            userMovie.Rating = rating;
+            userMovie.RatedAt = DateTime.Now;
+            userMovie.Movie = movieToBeRated;
+            userMovie.User = userInQuestion;
+
+            context.Add(userMovie);
+            context.SaveChanges();
+
+
+        }
+        
+    }
+
+    public void ViewMoviesRatedByUsers()
+    {
+
+        using (var context = new MovieContext())
+        {
+
+            var userMovie = new UserMovie();
+            
+            Console.WriteLine("Enter the id of the user's ratings you want to view.");
+            var userId = long.Parse(Console.ReadLine());
+
+            var user = context.Users.Where(x => x.Id == userId);
+            
+            var userAndMovies = user.Include(x=>x.UserMovies).ThenInclude(x=>x.Movie).ToList();
+            
+            foreach (var theUser in userAndMovies) {
+                System.Console.WriteLine($"User #:{theUser.Id} {theUser.Gender} {theUser.Occupation.Name}");
+
+                foreach (var movie in theUser.UserMovies.OrderBy(x=>x.Rating)) {
+                    Console.WriteLine($"\t\t\t{movie.Rating} {movie.Movie.Title}");
+                }
+            }
+            
+            
+
+        }
     }
 
 }

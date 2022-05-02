@@ -20,7 +20,9 @@ public class UtilityMenu
                 Console.WriteLine("5: delete a movie");
                 Console.WriteLine("6: add a User");
                 Console.WriteLine("7: Display user");
-                Console.WriteLine("8: exit");
+                Console.WriteLine("8: Rate a movie");
+                Console.WriteLine("9: Display user ratings");
+                Console.WriteLine("10: exit");
                 Console.Write("Your choice?: ");
 
                 var response = Console.ReadLine();
@@ -71,8 +73,18 @@ public class UtilityMenu
                 {
                      writer.displayUsers();
                 }
-
+                
                 else if (response == "8")
+                {
+                    writer.RateAMovie();
+                }
+                
+                else if (response == "9")
+                {
+                    writer.ViewMoviesRatedByUsers();
+                }
+
+                else if (response == "10")
                 {
                     break;
                 }
