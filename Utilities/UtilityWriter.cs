@@ -48,6 +48,13 @@ public class UtilityWriter
         using (var context = new MovieContext())
         {
 
+            var listOfGenres = context.Genres.ToList();
+
+            foreach (var genre in listOfGenres)
+            {
+                Console.WriteLine($"{genre.Id}: {genre.Name}");
+            }
+
             do
             {
 
