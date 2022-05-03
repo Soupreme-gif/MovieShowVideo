@@ -171,6 +171,9 @@ public class UtilityWriter
             var deleteMovieTitle = context.Movies.FirstOrDefault(x => x.Title.ToLower().Equals(title.ToLower()));
             var correspondingMovieGenres = context.MovieGenres
                 .FirstOrDefault(x => x.Movie == deleteMovieTitle);
+
+            var userMovieInformation = context.UserMovies
+                .FirstOrDefault(x => x.Movie == deleteMovieTitle);
             
 
             // verify exists first
@@ -182,6 +185,12 @@ public class UtilityWriter
             {
                 context.Movies.Remove(deleteMovieTitle);
                 context.MovieGenres.Remove(correspondingMovieGenres);
+
+                if (deleteMovieTitle.UserMovies != null)
+                {
+                    context.UserMovies.Remove(userMovieInformation);
+                }
+                
                 context.SaveChanges();
 
                 
