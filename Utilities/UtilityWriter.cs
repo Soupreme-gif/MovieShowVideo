@@ -251,6 +251,7 @@ public class UtilityWriter
         {
 
             User newUser = new User();
+            var occupationList = context.Occupations.ToList();
 
             Console.WriteLine("What is the age of the user?");
             var age = Console.ReadLine();
@@ -262,6 +263,11 @@ public class UtilityWriter
 
             Console.WriteLine("what is your zipcode?");
             var zipcode = Console.ReadLine();
+
+            foreach (var occupations in occupationList)
+            {
+                Console.WriteLine($"{occupations.Id}: {occupations.Name}");
+            }
 
             Console.WriteLine("Enter in occupation number.");
             var occupation = Console.ReadLine();
