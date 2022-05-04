@@ -63,34 +63,44 @@ public class UtilityWriter
                 Console.WriteLine("Enter in a Genre id");
                 var genreSelection = long.Parse(Console.ReadLine());
 
-
-                var genre = context.Genres.FirstOrDefault(x => x.Id == genreSelection);
-
-                var movieGenre = new MovieGenre();
-
-                movieGenre.Genre = genre;
-                movieGenre.Movie = theMovie;
-
-                context.MovieGenres.Add(movieGenre);
-                context.SaveChanges();
-
-                Console.WriteLine("would you like to add more genres?");
-                var choice = Console.ReadLine();
-
-                if (choice.ToLower() == "yes")
+                if (genreSelection <= 0 || genreSelection > listOfGenres.Count - 1)
                 {
                     stopAddingGenres = false;
+                    Console.WriteLine("Invalid genre selection please try again.");
                 }
                 else
                 {
-                    stopAddingGenres = true;
+
+
+                    var genre = context.Genres.FirstOrDefault(x => x.Id == genreSelection);
+
+                    var movieGenre = new MovieGenre();
+
+                    movieGenre.Genre = genre;
+                    movieGenre.Movie = theMovie;
+
+                    context.MovieGenres.Add(movieGenre);
+                    context.SaveChanges();
+
+                    Console.WriteLine("would you like to add more genres?");
+                    var choice = Console.ReadLine();
+
+                    if (choice.ToLower() == "yes")
+                    {
+                        stopAddingGenres = false;
+                    }
+                    else
+                    {
+                        stopAddingGenres = true;
+                    }
+
                 }
 
 
             } while (stopAddingGenres != true);
         }
     }
-
+    
     public void DisplayMovies()
     {
         using (var context = new MovieContext())
@@ -192,11 +202,13 @@ public class UtilityWriter
             {
                 context.Movies.Remove(deleteMovieTitle);
                 context.MovieGenres.Remove(correspondingMovieGenres);
-
-                if (deleteMovieTitle.UserMovies != null)
+                
+                
+                if (userMovieInformation != null)
                 {
                     context.UserMovies.Remove(userMovieInformation);
                 }
+                
                 
                 context.SaveChanges();
 
@@ -206,6 +218,8 @@ public class UtilityWriter
         }
 
     }
+
+    
 
     public void Search(string searchString)
     {
