@@ -187,10 +187,10 @@ public class UtilityWriter
         {
             var deleteMovieTitle = context.Movies.FirstOrDefault(x => x.Title.ToLower().Equals(title.ToLower()));
             var correspondingMovieGenres = context.MovieGenres
-                .FirstOrDefault(x => x.Movie == deleteMovieTitle);
+                .Where(x => x.Movie == deleteMovieTitle);
 
             var userMovieInformation = context.UserMovies
-                .FirstOrDefault(x => x.Movie == deleteMovieTitle);
+                .Where(x => x.Movie == deleteMovieTitle);
             
 
             // verify exists first
@@ -200,16 +200,16 @@ public class UtilityWriter
             }
             else
             {
-                context.MovieGenres.Remove(correspondingMovieGenres);
+                foreach (var correspondingMovieGenre in correspondingMovieGenres) context.MovieGenres.Remove(correspondingMovieGenre);
                 context.SaveChanges();
                 
                 
                 
                 if (userMovieInformation != null)
                 {
-                    context.UserMovies.Remove(userMovieInformation);
+                    foreach (var userMovie in userMovieInformation) context.UserMovies.Remove(userMovie);
+
                     context.SaveChanges();
-                    
                 }
 
                 
