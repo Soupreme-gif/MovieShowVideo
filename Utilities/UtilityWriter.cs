@@ -200,14 +200,23 @@ public class UtilityWriter
             }
             else
             {
-                context.Movies.Remove(deleteMovieTitle);
                 context.MovieGenres.Remove(correspondingMovieGenres);
+                context.SaveChanges();
+                
                 
                 
                 if (userMovieInformation != null)
                 {
                     context.UserMovies.Remove(userMovieInformation);
+                    context.SaveChanges();
+                    
                 }
+
+                
+                context.Movies.Remove(deleteMovieTitle);
+               
+                
+                
                 
                 
                 context.SaveChanges();
